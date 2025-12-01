@@ -39,6 +39,12 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+
+      setErrorMessage('logged in!')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+
     } catch {
       setErrorMessage('wrong credentials')
       setTimeout(() => {
@@ -54,6 +60,12 @@ const App = () => {
       window.localStorage.removeItem('loggedBlogappUser')
       blogService.setToken('')
       setUser(null)
+
+      setErrorMessage('logged out')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+
       setUsername('')
       setPassword('')
     } catch {
@@ -69,10 +81,18 @@ const App = () => {
 
     try {
       const newBlog = await blogService.addNew({ title, author, url })
+
+      const msg = 'Added ' + newBlog.title
+      setErrorMessage(msg)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+
       setBlogs(blogs.concat(newBlog))
       setUrl('')
       setTitle('')
       setAuthor('')
+
     } catch {
       setErrorMessage('error in adding blog')
       setTimeout(() => {
@@ -85,7 +105,7 @@ const App = () => {
     <form onSubmit={handleLogin}>
       <div>
         <h1>Log in to application</h1>
-        <p>{errorMessage}</p>
+        <p><i>{errorMessage}</i></p>
         <label>
           username
           <input
@@ -118,6 +138,7 @@ const App = () => {
           <form onSubmit={handleLogout}>
             <p>{user.name} logged in <button type="submit">logout</button></p>
           </form>
+          <p><i>{errorMessage}</i></p>
           <h2>create new</h2>
           <form onSubmit={handleNewBlog}>
             <div>
