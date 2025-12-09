@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import NewBlog from './components/NewBlog'  
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -81,24 +83,18 @@ const App = () => {
     }
   }
 
-  const handleNewBlog = async (event) => {
-    event.preventDefault()
-
+  const handleNewBlog = blog => {
     try {
-      const newBlog = await blogService.addNew({ title, author, url })
+      blogService.addNew(blog).then(newBlog => {
+        const msg = 'Added ' + newBlog.title
+        setErrorMessage(msg)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
 
-      const msg = 'Added ' + newBlog.title
-      setErrorMessage(msg)
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-      setVisible(false)
-
-      setBlogs(blogs.concat(newBlog))
-      setUrl('')
-      setTitle('')
-      setAuthor('')
-
+        setVisible(false)
+        setBlogs(blogs.concat(newBlog))
+      })
     } catch {
       setErrorMessage('error in adding blog')
       setTimeout(() => {
@@ -149,41 +145,7 @@ const App = () => {
             <button onClick={() => setVisible(true)}>add new blog</button>
           </div>
           <div style={showWhenVisible}>
-            <h2>create new</h2>
-            <form onSubmit={handleNewBlog}>
-              <div>
-                <label>
-                  title:
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={({ target }) => setTitle(target.value)}
-                  />
-                </label>
-              </div>
-              <div>
-                <label>
-                  author:
-                  <input
-                    type="text"
-                    value={author}
-                    onChange={({ target }) => setAuthor(target.value)}
-                  />
-                </label>
-              </div>
-              <div>
-                <label>
-                  url:
-                  <input
-                    type="text"
-                    value={url}
-                    onChange={({ target }) => setUrl(target.value)}
-                  />
-                </label>
-              </div>
-              <button type="submit">add</button>
-            </form>
-            <button onClick={() => setVisible(false)}>cancel</button>
+            <NewBlog blog={handleNewBlog}/>
           </div>
           {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />
