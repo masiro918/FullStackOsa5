@@ -2,19 +2,14 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import NewBlog from './components/NewBlog'  
-
+import NewBlog from './components/NewBlog'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState([])
   const [username, setUsername] = useState([])
   const [password, setPassword] = useState([])
-  const [errorMessage, setErrorMessage] = useState([])
-  const [url, setUrl] = useState([])
-  const [author, setAuthor] = useState([])
-  const [title, setTitle] = useState([])
-  
+  const [errorMessage, setErrorMessage] = useState([])  
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
@@ -94,6 +89,12 @@ const App = () => {
 
         setVisible(false)
         setBlogs(blogs.concat(newBlog))
+
+        // Ilman tätä ei näy blogin lisänneen käyttäjän nimi
+        // Ja konkatenointi yllä on tällöin turha...
+        blogService.getAll().then(blogs => {
+          setBlogs( blogs )
+        })
       })
     } catch {
       setErrorMessage('error in adding blog')
