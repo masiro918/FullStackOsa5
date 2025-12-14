@@ -1,9 +1,9 @@
 import ViewBlog from "./ViewBlog"
 
-const Blog = ({ blog }) => (
+const Blog = ({ blog, likeUpdater = null }) => (
   <div>
     <div>
-      {blog.title} {blog.author} <ViewBlog blog={blog} />
+      {blog.title} {blog.author} <ViewBlog blog={blog} likeUpdater={likeUpdater} />
     </div>
   </div>  
 )

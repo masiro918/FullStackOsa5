@@ -104,6 +104,23 @@ const App = () => {
     }
   }
 
+  const handleLike = blog => {
+    const userId = blog.user.id
+    let _blog = blog
+    _blog.user = userId
+    _blog.likes = blog.likes + 1
+    const blogId = blog.id
+    
+    try {
+      blogService.addLike(_blog, blogId).then( updatedBlog => {
+        blog.likes = updatedBlog.likes
+        setBlogs(blogs.map(blog => (blog.id !== blogId ? blog : updatedBlog)))
+      })
+    } catch {
+      console.log('error')
+    }
+  }
+
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -149,7 +166,7 @@ const App = () => {
             <NewBlog blog={handleNewBlog}/>
           </div>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} likeUpdater={() => handleLike(blog)}/>
           )}
         </div>
       )}
