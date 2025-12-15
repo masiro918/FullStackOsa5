@@ -15,6 +15,7 @@ const App = () => {
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
 
+  // We use this function to sort list
   const comparator = (a, b) => (a.likes > b.likes ? 0 : 1)
 
   useEffect(() => {
