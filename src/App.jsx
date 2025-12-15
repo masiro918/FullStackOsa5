@@ -15,9 +15,11 @@ const App = () => {
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
 
+  const comparator = (a, b) => (a.likes > b.likes ? 0 : 1)
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs ),
+      setBlogs(blogs.sort(comparator)),
       setUser(null)
     )
   }, [])
@@ -90,10 +92,8 @@ const App = () => {
         setVisible(false)
         setBlogs(blogs.concat(newBlog))
 
-        // Ilman tätä ei näy blogin lisänneen käyttäjän nimi
-        // Ja konkatenointi yllä on tällöin turha...
         blogService.getAll().then(blogs => {
-          setBlogs( blogs )
+          setBlogs(blogs.sort(comparator))
         })
       })
     } catch {
