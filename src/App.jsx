@@ -58,6 +58,21 @@ const App = () => {
     }
   }
 
+  const removeBlog = blog => {
+    try {
+      const blogId = blog.id
+      console.log(blogId)
+      blogService.remove(blogId).then(response => {
+        console.log(response)
+      })
+    } catch {
+      setErrorMessage('error in removing blog')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const handleLogout = async (event) => {
     event.preventDefault()
 
@@ -65,7 +80,6 @@ const App = () => {
       window.localStorage.removeItem('loggedBlogappUser')
       blogService.setToken('')
       setUser(null)
-
       setErrorMessage('logged out')
       setTimeout(() => {
         setErrorMessage(null)
@@ -118,7 +132,10 @@ const App = () => {
         setBlogs(blogs.map(blog => (blog.id !== blogId ? blog : updatedBlog)))
       })
     } catch {
-      console.log('error')
+      setErrorMessage('error in liking')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
   }
 
@@ -167,8 +184,8 @@ const App = () => {
             <NewBlog blog={handleNewBlog}/>
           </div>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} likeUpdater={() => handleLike(blog)}/>
-          )}
+            <Blog key={blog.id} myUser={user.username} blog={blog} likeUpdater={() => handleLike(blog)} remover={() => removeBlog(blog)}/>
+          )}            
         </div>
       )}
     </div>

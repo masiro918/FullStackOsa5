@@ -1,9 +1,7 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 
-const ViewBlog = ({ blog, likeUpdater = null }) => {
+const ViewBlog = ({ blog, likeUpdater = null, remover = null }) => {
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(0)
 
   const handleVisible = (event) => {
     event.preventDefault()
@@ -28,6 +26,9 @@ const ViewBlog = ({ blog, likeUpdater = null }) => {
             <p>{blog.url}</p>
             <p>likes {blog.likes}<button onClick={likeUpdater}>like</button></p>
             <p>{blog.user.name}</p>
+          {(remover !== null) && (
+            <button onClick={remover}>remove</button>
+          )}
           </span>
         )}
       </span>
