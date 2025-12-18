@@ -61,9 +61,10 @@ const App = () => {
   const removeBlog = blog => {
     try {
       const blogId = blog.id
-      console.log(blogId)
       blogService.remove(blogId).then(response => {
-        console.log(response)
+        blogService.getAll().then(blogs => {
+          setBlogs(blogs.sort(comparator))
+        })
       })
     } catch {
       setErrorMessage('error in removing blog')
@@ -129,7 +130,8 @@ const App = () => {
     try {
       blogService.addLike(_blog, blogId).then( updatedBlog => {
         blog.likes = updatedBlog.likes
-        setBlogs(blogs.map(blog => (blog.id !== blogId ? blog : updatedBlog)))
+        //setBlogs(blogs.map(blog => (blog.id !== blogId ? blog : updatedBlog)))
+        //setBlogs(blogs.sort(comparator))
       })
     } catch {
       setErrorMessage('error in liking')
