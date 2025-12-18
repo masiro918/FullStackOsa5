@@ -1,10 +1,9 @@
 import { useState } from 'react'
+import blogService from '../services/blogs'
 
-const ViewBlog = ({ blog, likeUpdater = null, remover = null }) => {
+const ViewBlog = ({ blog, likeUpdater = null }) => {
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
-  const [user, setUser] = useState(blog.user)
-  const [url, setUrl] = useState(blog.url)
+  const [likes, setLikes] = useState(0)
 
   const handleVisible = (event) => {
     event.preventDefault()
@@ -13,16 +12,8 @@ const ViewBlog = ({ blog, likeUpdater = null, remover = null }) => {
       setVisible(false)
     } else {
       setVisible(true)
-      setUrl(blog.url)
-      setUser(blog.user.name)
-      setLikes(blog.likes)
-    }
-  }
 
-  const handleLike = async (event) => {
-    event.preventDefault()
-    await likeUpdater()
-    setLikes(likes + 1)
+    }
   }
 
   try {
@@ -34,17 +25,14 @@ const ViewBlog = ({ blog, likeUpdater = null, remover = null }) => {
         {visible && (
           <span>
             <button onClick={handleVisible}>hide</button>
-            <p>{url}</p>
-            <p>likes {likes}<button onClick={handleLike}>like</button></p>
-            <p>{user}</p>
-          {(remover !== null) && (
-            <button onClick={() => remover()}>remove</button>
-          )}
+            <p>{blog.url}</p>
+            <p>likes {blog.likes}<button onClick={likeUpdater}>like</button></p>
+            <p>{blog.user.name}</p>
           </span>
         )}
       </span>
     )
-  } catch (exception) {
+  } catch {
     setVisible(false)
     return (
       <span>

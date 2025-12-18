@@ -1,18 +1,11 @@
 import ViewBlog from "./ViewBlog"
 
-const Blog = ({ blog, likeUpdater = null, remover = null, myUser = null }) => (
+const Blog = ({ blog, likeUpdater = null }) => (
   <div>
-    {blog.user !== undefined && blog.user !== null && (blog.user.username == myUser) && (
     <div>
-      {blog.title} {blog.author} <ViewBlog blog={blog} likeUpdater={likeUpdater} remover={() => remover()} />
+      {blog.title} {blog.author} <ViewBlog blog={blog} likeUpdater={likeUpdater} />
     </div>
-    )}
-    {blog.user !== undefined && blog.user !== null && (blog.user.username !== myUser) && (
-    <div>
-      {blog.title} {blog.author} <ViewBlog blog={blog} likeUpdater={likeUpdater} remover={() => null} />
-    </div>
-    )}
-  </div>
+  </div>  
 )
 
 export default Blog
