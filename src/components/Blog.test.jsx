@@ -46,3 +46,29 @@ test('renders url, likes and username', async () => {
   const elementUser = screen.getByText('Testi Tapaus', { exact: false })
   expect(elementUser).toBeDefined()
 })
+
+test('pressing two times like button', async () => {
+  const blog = {
+    id: 99,
+    author: 'ei kukaan',
+    title: 'ostsikko',
+    likes: 99,
+    url: '127.0.0.1',
+    user: {
+      name: 'Testi Tapaus'
+    }
+  }
+
+  const eventHandler = vi.fn()
+
+  render(<Blog blog={blog} likeUpdater={eventHandler}/>)
+  const user = userEvent.setup()
+  const button = screen.getByText('view', { exact: false })
+  await user.click(button)
+
+  const likeButton = screen.getByText('like', { exact: true })
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(eventHandler.mock.calls).toHaveLength(2)
+})
