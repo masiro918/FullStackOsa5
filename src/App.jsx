@@ -12,8 +12,10 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState([])  
   const [visible, setVisible] = useState(false)
 
+  /*
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
+  */
 
   // We use this function to sort list
   const comparator = (a, b) => (a.likes > b.likes ? 0 : 1)
@@ -163,10 +165,7 @@ const App = () => {
             <p>{user.name} logged in <button type="submit">logout</button></p>
           </form>
           <p><i>{errorMessage}</i></p>
-          <div style={hideWhenVisible}>
-            <button onClick={() => setVisible(true)}>add new blog</button>
-          </div>
-          <div style={showWhenVisible}>
+          <div>
             <NewBlog blog={handleNewBlog}/>
           </div>
           {blogs.map(blog =>

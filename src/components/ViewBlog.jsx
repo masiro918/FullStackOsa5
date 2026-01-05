@@ -36,9 +36,7 @@ const ViewBlog = ({ blog, likeUpdater = null }) => {
     setVisible(false)
     return (
       <span>
-        {!visible && (
-          <button onClick={handleVisible}>view</button>
-        )}
+        <button onClick={handleVisible}>view</button>
       </span>
     )
   }
