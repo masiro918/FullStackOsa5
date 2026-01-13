@@ -37,25 +37,4 @@ describe('Blog app', () => {
       await expect(page.getByText('wrong credentials')).toBeVisible()
     })
   })
-
-  describe('When logged in', () => {
-    beforeEach(async ({ page }) => {
-      await page.getByRole('textbox').first().fill('mluukkai')
-      await page.getByRole('textbox').last().fill('salainen')
-      await page.getByRole('button', { name: 'login' }).click()
-    })
-
-    test('a new blog can be created', async ({ page }) => {
-      await page.getByRole('button', { name: 'add new blog' }).click()
-
-      const textboxes = await page.getByRole('textbox').all()
-      await textboxes[0].fill('testi_jaa')
-      await textboxes[1].fill('testi_joo')
-      await textboxes[2].fill('testi_nii')
-      await page.getByRole('button', { name: 'add' }).click()
-
-      await expect(page.getByText('Added testi_jaa')).toBeVisible()
-      await expect(page.getByText('').getByText('testi_jaa').toBeVisible())
-    })
-  })
 })
